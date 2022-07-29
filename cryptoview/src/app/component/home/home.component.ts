@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ethers } from "ethers";
-import { WinRefService } from 'src/app/service/win-ref.service';
+import { MetamaskIntegrationService } from 'src/app/service/metamask-integration.service';
 
 @Component({
   selector: 'app-home',
@@ -9,26 +8,18 @@ import { WinRefService } from 'src/app/service/win-ref.service';
 })
 export class HomeComponent implements OnInit {
 
-  constructor(private winRefService: WinRefService) { 
+  constructor(private metaMaskIntegrationService: MetamaskIntegrationService) { 
   }
 
   ngOnInit(): void {
-    this.getAccount();
-    this.getCurrent();
   }
 
-  async getAccount() {
-    const provider = new ethers.providers.Web3Provider(this.winRefService.window.ethers);
-    await provider.send("eth_requestAccounts", []);
-    const signer = provider.getSigner()
-    console.log(signer);
+  getAccount(){
+    this.metaMaskIntegrationService.getAccount();
   }
 
-  async getCurrent(){
-    const provider = new ethers.providers.Web3Provider(this.winRefService.window.ethers);
-    var balance = await provider.getBalance("ethers.eth")
-    ethers.utils.formatEther(balance)
-    console.log(balance);
-
+  getCurrency() {
+    this.metaMaskIntegrationService.getCurrent();
   }
+
 }
