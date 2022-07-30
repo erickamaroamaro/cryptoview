@@ -11,7 +11,7 @@ export class MetamaskIntegrationService {
 
   async getAccount() {
     if (this.winRefService.window.ethereum){
-      const provider = new ethers.providers.Web3Provider(this.winRefService.window.ethereum);
+      const provider = this.getProvider();
       try{
         await provider.send("eth_requestAccounts", []);
         const signer = provider.getSigner();
@@ -27,9 +27,13 @@ export class MetamaskIntegrationService {
     }
   }
 
+  getProvider(){
+    const provider = new ethers.providers.Web3Provider(this.winRefService.window.ethereum);
+    return provider;
+  }
   async getCurrent(){
     if (this.winRefService.window.ethereum){
-      const provider = new ethers.providers.Web3Provider(this.winRefService.window.ethereum);
+      const provider = this.getProvider();
       try{
         var balance = await provider.getBalance("ethers.eth")
         console.log(ethers.utils.formatEther(balance));

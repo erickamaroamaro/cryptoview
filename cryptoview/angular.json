@@ -76,14 +76,11 @@
               "browserTarget": "cryptoview:build:production"
             },
             "development": {
-              "browserTarget": "cryptoview:build:development"
-            },
-            "defaults": {
               "proxyConfig": "proxy.config.js",
               "browserTarget": "cryptoview:build:development"
             }
           },
-          "defaultConfiguration": "defaults"
+          "defaultConfiguration": "development"
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",

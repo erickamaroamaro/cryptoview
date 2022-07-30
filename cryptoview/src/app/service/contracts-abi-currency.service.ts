@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ethers } from "ethers";
+import { MetamaskIntegrationService } from './metamask-integration.service';
 import { WinRefService } from './win-ref.service';
 
 
@@ -8,16 +9,12 @@ import { WinRefService } from './win-ref.service';
 })
 export class ContractsAbiCurrencyService {
 
-  constructor(private winRefService: WinRefService) { 
+  constructor(private metamaskIntegrationService: MetamaskIntegrationService) { 
 
   }
 
-  daiContract(){
+  async daiContract(){
     let provider;
-    this.getProvider().then((data) => {
-      provider = data;
-      console.log('provider', provider);
-    });
     const daiAddress = "dai.tokens.ethers.eth";
     // The ERC-20 Contract ABI, which is a common contract interface
     // for tokens (this is the Human-Readable ABI format)
@@ -35,18 +32,13 @@ export class ContractsAbiCurrencyService {
       // An event triggered whenever anyone transfers to someone else
       "event Transfer(address indexed from, address indexed to, uint amount)"
     ];
-  
     // The Contract object
+    provider = this.metamaskIntegrationService.getProvider();
     const daiContract = new ethers.Contract(daiAddress, daiAbi, provider);
-  }
+    let balance = await daiContract['balanceOf']("ricmoo.firefly.eth")
 
-  async getProvider(){
-    if (this.winRefService.window.ethereum){
-      const provider = new ethers.providers.Web3Provider(this.winRefService.window.ethereum);
-      return provider;
-    } else {
-      return "provider não encontrado";
-    }
+    console.log('balance', ethers.utils.formatUnits(balance, 2))
+    console.log(daiContract);
   }
 
 }
