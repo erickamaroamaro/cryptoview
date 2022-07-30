@@ -14,10 +14,15 @@ export class MetamaskIntegrationService {
       const provider = new ethers.providers.Web3Provider(this.winRefService.window.ethereum);
       try{
         await provider.send("eth_requestAccounts", []);
-        const signer = provider.getSigner()
-        console.log(signer);
+        const signer = provider.getSigner();
+        // const sing = await provider.send({method: 'personal_sign', "params": ["Eu sou o dono da conta"]});
+        const address = await signer.getAddress().valueOf();
+        console.log(address);
+        console.log(provider);
+        return address;
       } catch(error) {
         console.log(error);
+        return error
       }
     }
   }
